@@ -58,9 +58,9 @@ public final class AStarAlgorithm implements PathFinder {
 	}
 
 	private int h(final Field to) {
-		// Unsere Heuristik:
-		// Euklidischer Abstand, siehe:
-		// http://de.wikipedia.org/wiki/Euklidischer_Abstand
+		// Our heuristic:
+		// Euclidean distance, see:
+		// http://en.wikipedia.org/wiki/Euclidean_distance
 		final Field goal = map.getGoal();
 		final int diff = (int) Math.round(Math.sqrt(Math.pow(
 				goal.getX() - to.getX(), 2)
