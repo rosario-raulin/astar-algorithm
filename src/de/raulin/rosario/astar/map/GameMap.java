@@ -139,16 +139,16 @@ public final class GameMap {
 		final GameMap m = new GameMap(10);
 		System.out.println(m);
 		
-		PathFinder pf = new AStarAlgorithm(m);
-		final Iterable<Field> path = pf.findShortestPath(m.get(0, 0));
-		
-		if (path == null) {
-			System.out.println("no path found");
-		} else {
-			System.out.println("Path found:");
-			for (final Field f : path) {
-				System.out.println(f.getX()+", "+f.getY());
-			}
-		}
+//		PathFinder pf = new AStarAlgorithm(m);
+//		final Iterable<Field> path = pf.findShortestPath(m.get(0, 0));
+//		
+//		if (path == null) {
+//			System.out.println("no path found");
+//		} else {
+//			System.out.println("Path found:");
+//			for (final Field f : path) {
+//				System.out.println(f.getX()+", "+f.getY());
+//			}
+//		}
 	}
 }
