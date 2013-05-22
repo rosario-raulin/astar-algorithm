@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.Stack;
 
+import de.raulin.rosario.astar.help.Stack;
 import de.raulin.rosario.astar.map.Field;
 import de.raulin.rosario.astar.map.GameMap;
 
@@ -19,15 +19,15 @@ public final class AStarAlgorithm implements PathFinder {
 
 	public AStarAlgorithm(final GameMap map) {
 		this.map = map;
-		this.fValues = new HashMap<Field,Integer>();
+		this.fValues = new HashMap<Field, Integer>();
 	}
 
 	private void initCosts(final Field from) {
 		this.fValues.clear();
-		
+
 		int dimension = map.getDimension();
 		costs = new HashMap<Field, Integer>();
-		
+
 		for (int i = 0; i < dimension; ++i) {
 			for (int j = 0; j < dimension; ++j) {
 				costs.put(map.get(i, j), Integer.MAX_VALUE);
@@ -37,10 +37,14 @@ public final class AStarAlgorithm implements PathFinder {
 	}
 
 	private int h(final Field to) {
+		// Euklidischer Abstand, siehe: http://de.wikipedia.org/wiki/Euklidischer_Abstand
 		final Field goal = map.getGoal();
-		return Math.abs(goal.getX() - to.getX()) + Math.abs(goal.getY() - to.getY());
+		final int diff = (int) Math.round(Math.sqrt(Math.pow(goal.getX() - to.getX(), 2)
+				+ Math.pow(goal.getY() - to.getY(), 2)));
+
+		return diff;
 	}
-	
+
 	private void expandNode(final Field curr,
 			final PriorityQueue<Field> openList, final Set<Field> closedList,
 			final Map<Field, Field> preds) {
@@ -52,7 +56,7 @@ public final class AStarAlgorithm implements PathFinder {
 					preds.put(succ, curr);
 					costs.put(succ, newCosts);
 					fValues.put(succ, newCosts + h(succ));
-					
+
 					if (openList.contains(succ)) {
 						openList.remove(succ);
 					}
@@ -61,31 +65,32 @@ public final class AStarAlgorithm implements PathFinder {
 			}
 		}
 	}
-	
+
 	public Iterable<Field> backtrack(final Map<Field, Field> preds) {
 		final Stack<Field> s = new Stack<Field>();
-		
+
 		Field curr = map.getGoal();
-		s.push(curr);
+		s.add(curr);
 		while (preds.get(curr) != null) {
 			curr = preds.get(curr);
-			s.push(curr);
+			s.add(curr);
 		}
-		
+
 		return s;
 	}
 
 	@Override
 	public Iterable<Field> findShortestPath(final Field from) {
-		PriorityQueue<Field> openList = new PriorityQueue<Field>(map.getDimension(), new Comparator<Field>() {
+		PriorityQueue<Field> openList = new PriorityQueue<Field>(
+				map.getDimension(), new Comparator<Field>() {
 
-			@Override
-			public int compare(Field o1, Field o2) {
-				return fValues.get(o1) - fValues.get(o2);
-			}
-		});
+					@Override
+					public int compare(Field o1, Field o2) {
+						return fValues.get(o1) - fValues.get(o2);
+					}
+				});
 		Set<Field> closedList = new HashSet<Field>();
-		Map<Field, Field> preds = new HashMap<Field,Field>();
+		Map<Field, Field> preds = new HashMap<Field, Field>();
 
 		preds.put(from, null);
 		initCosts(from);
