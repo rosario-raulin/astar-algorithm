@@ -27,7 +27,7 @@ public class Field {
 	public String toString() {
 		switch (type) {
 		case STONE:
-			return "S";
+			return "X";
 		case FREE:
 			return "_";
 		case FLOWER:

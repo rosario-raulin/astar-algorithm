@@ -136,7 +136,7 @@ public final class GameMap {
 	}
 	
 	public static void main(String[] args) {
-		final GameMap m = new GameMap(5);
+		final GameMap m = new GameMap(10);
 		System.out.println(m);
 		
 		PathFinder pf = new AStarAlgorithm(m);
